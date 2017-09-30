@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 
 /**
  * Created by liangjing on 2017/9/26.
- * function:
+ * function:wifi热点管理类
  */
 
 public class ApManager {
