@@ -20,6 +20,12 @@ public abstract class ConfigurationSecurities {
     public abstract String getScanResultSecurity(ScanResult scanResult);
 
 
+    //判断该wifi热点是不是开放的(不需要密码)
+    public abstract boolean isOpenNetwork(final String security);
+
+    //对该wifi热点进行相关安全设置（配置wifi）
+    public abstract void setupSecurity(WifiConfiguration config, String security, final String password);
+
     /**
      * function:根据不同版本的安卓手机创建相应的实现类对象
      * @return

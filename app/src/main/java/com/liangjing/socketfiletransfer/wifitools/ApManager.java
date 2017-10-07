@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 
 /**
  * Created by liangjing on 2017/9/26.
- * function:wifi热点管理类
+ * function:wifi热点操作管理类--发送文件的那个移动设备--开启热点的设备
  */
 
 public class ApManager {

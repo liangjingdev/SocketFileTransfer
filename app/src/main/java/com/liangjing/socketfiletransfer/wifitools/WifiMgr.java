@@ -7,6 +7,8 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.provider.Settings;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -203,10 +205,55 @@ public class WifiMgr {
 
         //获取该未隐藏的wifi热点的加密方式
         final String security = Wifi.configSec.getScanResultSecurity(result);
-        //获取该wifi热点的Configuration类对象
+        //获取该wifi热点的Configuration类对象(若用户已经配置过该wifi热点，那么config将不为空，否则config为空)--检查该wifi热点用户是否已经配置过
         final WifiConfiguration config = Wifi.getWifiConfiguration(mWifiManager, result, security);
 
-        // TODO: 2017/9/30  
+        //config为空--表示该wifi热点是用户未配置过的--即表示连接新wifi.那么接下来肯定是要配置好该wifi热点噶
+        if (config == null) {
+
+            //用来判断该wifi热点是否被用户配置好了--也就是用来判断连接该wifi热点是否成功
+            boolean connResult;
+            //WIFI_NUM_OPEN_NETWORKS_KEPT--常数值“wifi_num_open_networks_kept”--当开放网络的数量超过此数量时，最近最少使用的多余网络将被删除。numOpenNetworksKept--最大可保存的开放网络数量
+            int numOpenNetworksKept = Settings.Secure.getInt(mContext.getContentResolver(), Settings.Secure.WIFI_NUM_OPEN_NETWORKS_KEPT, 10);
+            //获取该wifi热点的加密方式
+            String scanResultSecurity = Wifi.configSec.getScanResultSecurity(result);
+            //判断该wifi热点是否是开放的(无需密码即可连接)
+            boolean isOpenNetwork = Wifi.configSec.isOpenNetwork(scanResultSecurity);
+
+            //判断该wifi热点是否为开放的，再采取相对应的措施
+            if (isOpenNetwork) {
+                connResult = Wifi.connectToNewNetwork(mContext, mWifiManager, result, null, numOpenNetworksKept);
+            } else {
+                connResult = Wifi.connectToNewNetwork(mContext, mWifiManager, result, pwd, numOpenNetworksKept);
+            }
+            return connResult;
+        } else {
+
+            //---接下来是操作是表示该wifi热点用户已经配置过了，那么直接进行连接操作
+
+            //WifiConfiguration.Status--网络配置的可能状态 WifiConfiguration.Status.CURRENT--这是我们当前连接到的网络 config.status--当前该wifi热点的网络配置状态
+            //isCurrentNetwork_ConfigurationStatus值为true,则表示用户的移动设备的当前网络就是该wifi热点网络
+            final boolean isCurrentNetwork_ConfigurationStatus = config.status == WifiConfiguration.Status.CURRENT;
+
+            //getConnectionInfo()--获取wifi连接信息  WifiInfo--wifi无线连接的描述
+            final WifiInfo info = mWifiManager.getConnectionInfo();
+            //用于判断当前移动设备的网络是否为wifi,以及SSID/BSSID
+            final boolean isCurrentNetwork_WifiInfo = info != null && TextUtils.equals(info.getSSID(), result.SSID) && TextUtils.equals(info.getBSSID(), result.BSSID);
+            if (!isCurrentNetwork_ConfigurationStatus && !isCurrentNetwork_WifiInfo) {
+                //连接已保存(已配置过的)wifi
+                String scanResultSecurity = Wifi.configSec.getScanResultSecurity(result);
+                final WifiConfiguration configuration = Wifi.getWifiConfiguration(mWifiManager, result, scanResultSecurity);
+                //用于判断是否连接成功
+                boolean connResult = false;
+                if (configuration != null) {
+                    connResult = Wifi.connectToConfiguredNetwork(mContext, mWifiManager, configuration, false);
+                }
+                return connResult;
+            } else {
+                //点击的是当前已连接的WiFi
+                return true;
+            }
+        }
     }
 
 
