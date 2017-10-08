@@ -33,6 +33,5 @@ public class ReceiveFilesActivity extends AppCompatActivity {
         //监听wifi连接与断开
         filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         //注册系统广播
-
     }
 }

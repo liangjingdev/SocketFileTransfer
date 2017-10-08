@@ -3,4 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="white">#fff</color>
+    <color name="black">#000</color>
+
+    <!--文本内容颜色-->
+    <color name="textColor_content">#333</color>
+    <!--文本标题颜色-->
+    <color name="textColor_caption">#999</color>
+    <!--条目颜色-->
+    <color name="textColor_item_orange">#FF9200</color>
 </resources>

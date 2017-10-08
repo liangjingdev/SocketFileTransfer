@@ -83,4 +83,20 @@ public class note {
     返回
     boolean	true 如果操作成功*/
 
+   /*
+
+   ---ContextCompat
+
+   checkSelfPermission
+
+    int checkSelfPermission（Context context，
+    String permission）
+    确定您是否被授予特定权限。
+
+    参数
+    context	Context
+    permission	String：正在检查的权限的名称。
+    返回
+    int	PERMISSION_GRANTED--代表您有权限，或者PERMISSION_DENIED--代表您没有此权限。*/
+
 }
