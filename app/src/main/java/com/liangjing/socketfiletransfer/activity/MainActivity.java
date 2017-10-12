@@ -1,7 +1,9 @@
-package com.liangjing.socketfiletransfer;
+package com.liangjing.socketfiletransfer.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.liangjing.socketfiletransfer.R;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -31,7 +31,7 @@ public class FileInfo implements Serializable {
     //文件传输进度
     private int progress;
 
-    // TODO: 2017/10/9
+    //该文件在列表中的位置值
     private int position;
 
     public String getFilePath() {
