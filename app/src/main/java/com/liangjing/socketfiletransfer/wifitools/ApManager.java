@@ -73,7 +73,7 @@ public class ApManager {
      *
      * @param SSID     热点名称
      * @param password 热点密码
-     * @return 热点配置信息
+     * @return 热点配置信息--WifiConfiguration类对象
      */
     private static WifiConfiguration getApConfig(String SSID, String password) {
 

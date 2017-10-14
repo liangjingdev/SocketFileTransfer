@@ -30,7 +30,7 @@ public class AppContext extends Application {
     //文件发送端单线程
     public static Executor FILE_SENDER_EXECUTOR = Executors.newSingleThreadExecutor();
 
-    //待发送的文件数据(该Map集合中的key为该文件在发送端中的存储路径)
+    //待发送的文件数据(该Map集合中的key为该文件在发送端中的存储路径)--接收端所需要接收到的文件数据
     public Map<String, FileInfo> mSendFileInfoMap = new HashMap<>();
 
     //接收到的文件数据
@@ -105,7 +105,7 @@ public class AppContext extends Application {
 
 
     /**
-     * function:更新FileInfo(什么情况下更新呢？？)
+     * function:更新FileInfo(当有一个文件发送成功或失败时就会回调该方法)
      *
      * @param fileInfo
      */

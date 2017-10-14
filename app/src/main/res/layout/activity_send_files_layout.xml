@@ -20,7 +20,7 @@
         android:layout_marginTop="@dimen/dist_10"
         android:layout="@layout/layout_open_hotspot"/>
 
-    <com.liangjing.unirecyclerviewlib.recyclerview.OptionRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_send_files"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

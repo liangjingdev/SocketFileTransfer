@@ -26,10 +26,12 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.github.liangjingdev:OptionRecyclerView:6c1beea369'
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.google.code.gson:gson:2.8.2'
+    //万能适配器（RecyclerView）：https://github.com/hongyangAndroid/baseAdapter
+    compile 'com.zhy:base-rvadapter:3.0.3'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 }

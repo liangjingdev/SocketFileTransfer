@@ -99,4 +99,32 @@ public class note {
     返回
     int	PERMISSION_GRANTED--代表您有权限，或者PERMISSION_DENIED--代表您没有此权限。*/
 
+   /*
+
+   Handler类
+
+   obtainMessage
+
+    Message obtainMessage (int what,
+                           Object obj)
+    相同obtainMessage()，除了它还设置返回的消息的what和obj成员。
+
+    参数
+    what	int：分配给返回的Message.what字段的值。
+    obj	Object：分配给返回的Message.obj字段的值。
+    返回
+    Message	来自全局消息池的消息。
+*/
+
+
+    /*
+
+    Message类
+
+    sendToTarget
+
+    void sendToTarget（）
+    将此消息发送给指定的处理程序getTarget()。如果此字段尚未设置，则抛出空指针异常。
+    */
+
 }
