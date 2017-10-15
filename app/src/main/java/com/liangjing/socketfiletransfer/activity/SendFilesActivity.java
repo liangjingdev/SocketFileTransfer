@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -21,7 +22,6 @@ import com.liangjing.socketfiletransfer.base.BaseActivity;
 import com.liangjing.socketfiletransfer.bean.FileInfo;
 import com.liangjing.socketfiletransfer.common.Constants;
 import com.liangjing.socketfiletransfer.common.FileSender;
-import com.liangjing.socketfiletransfer.common.SpaceItemDecoration;
 import com.liangjing.socketfiletransfer.receiver.HotspotBroadcastReceiver;
 import com.liangjing.socketfiletransfer.utils.FileUtil;
 import com.liangjing.socketfiletransfer.utils.LogUtil;
@@ -222,11 +222,8 @@ public class SendFilesActivity extends BaseActivity {
                 for (final Map.Entry<String, FileInfo> fileInfoMap : fileInfoList) {
                     final FileInfo fileInfo = fileInfoMap.getValue();
                     Socket socket = mServerSocket.accept();
-                    //首先获取到该文件对应的FileSender对象
+                    //首先获取到该文件对应的FileSender对象,FileSender--进行文件发送操作
                     FileSender fileSender = new FileSender(getContext(), fileInfo, socket);
-                    //然后将该FileSender对象(Runnable接口)添加到线程池中去执行
-                    mFileSenderList.add(fileSender);
-                    AppContext.FILE_SENDER_EXECUTOR.execute(fileSender);
                     //添加监听器
                     fileSender.setOnSendListener(new FileSender.OnSendListener() {
                         @Override
@@ -275,6 +272,9 @@ public class SendFilesActivity extends BaseActivity {
                             mHandler.sendMessage(msg);
                         }
                     });
+                    //然后将该FileSender对象(Runnable接口)添加到线程池中去执行
+                    mFileSenderList.add(fileSender);
+                    AppContext.FILE_SENDER_EXECUTOR.execute(fileSender);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -522,7 +522,7 @@ public class SendFilesActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            if (msg.what == MSG_UPDATE_ADAPTER) {
+            if (msg.what == MSG_UPDATE_PROGRESS) {
                 //更新文件发送进度
                 int position = msg.arg1; //该文件在发送列表中的索引值
                 int progress = msg.arg2; //该文件发送进度值
@@ -582,7 +582,7 @@ public class SendFilesActivity extends BaseActivity {
         //设置ListView样式
         mSendFileRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         //分割线
-        mSendFileRecyclerView.addItemDecoration(new SpaceItemDecoration(5));
+        mSendFileRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
     }
 
 
@@ -600,7 +600,7 @@ public class SendFilesActivity extends BaseActivity {
 
         FileInfo fileInfo = mSendFileAdapter.getDatas().get(position).getValue();
         fileInfo.setProgress(progress); //设置进度值
-        mSendFileAdapter.notifyItemChanged(position);
+        mSendFileAdapter.notifyItemChanged(position);//此时就会回调适配器中设置数据的那些方法，以更新item
 
         //若刚好是在传送最后一个文件且已传送完毕，则弹出提示--传送所有文件完毕
         if (position == AppContext.getAppContext().getSendFileInfoMap().size() - 1 && progress == 100) {

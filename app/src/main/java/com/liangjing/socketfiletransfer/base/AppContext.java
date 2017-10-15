@@ -119,7 +119,7 @@ public class AppContext extends Application {
      **************************************************************************************/
 
     /**
-     * function:删除接收到的文件map(所有文件数据)
+     * function:删除接收到的文件map(所有文件数据)--清空文件列表
      */
     public void clearReceivedFileInfoMap() {
         mReceivedFileInfoMap.clear();

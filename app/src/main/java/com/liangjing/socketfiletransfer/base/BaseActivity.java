@@ -28,7 +28,6 @@ import com.liangjing.socketfiletransfer.utils.LogUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -61,13 +60,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     //标题栏相关控件
-    @BindView(R.id.base_toolbar)
     private Toolbar mToolbar;
-    @BindView(R.id.tv_toolbar_title)
     private TextView tvTitle;
 
     //内容视图控件
-    @BindView(R.id.base_viewStub)
     private ViewStub mViewStub;
 
     //当前Activity的上下文
@@ -91,8 +87,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         mContext = this;
 
         setContentView(R.layout.activity_base_layout);
-        //绑定注解类
-        ButterKnife.bind(this);
+
+        mToolbar = (Toolbar) findViewById(R.id.base_toolbar);
+        tvTitle = (TextView) findViewById(R.id.tv_toolbar_title);
+        mViewStub = (ViewStub) findViewById(R.id.base_viewStub);
 
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
@@ -109,6 +107,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (isNotEmptyString(titleText)) {
             tvTitle.setText(getTitleText());
         }
+
+        //绑定注解类
+        ButterKnife.bind(this);
 
         //初始化数据
         initData();
@@ -275,14 +276,15 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 弹出Toast提示
+     *
      * @param text 提示内容
      */
     protected void toast(String text) {
-        if(this.isFinishing()) {
+        if (this.isFinishing()) {
             return;
         }
 
-        if(!TextUtils.isEmpty(text)) {
+        if (!TextUtils.isEmpty(text)) {
             Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
         }
     }
@@ -407,14 +409,16 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * function:跳转到另外一个activity
+     *
      * @param mClass
      */
-    protected void pushActivity(Class<?> mClass){
-        startActivity(new Intent(mContext,mClass));
+    protected void pushActivity(Class<?> mClass) {
+        startActivity(new Intent(mContext, mClass));
     }
 
     /**
      * 判断字符串是否为空
+     *
      * @param text
      * @return
      */
@@ -424,6 +428,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 判断列表是否为空
+     *
      * @param list
      * @return
      */

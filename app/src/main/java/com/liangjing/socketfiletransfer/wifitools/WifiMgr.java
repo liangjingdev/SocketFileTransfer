@@ -2,6 +2,7 @@ package com.liangjing.socketfiletransfer.wifitools;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.DhcpInfo;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
@@ -20,6 +21,10 @@ import java.util.List;
  */
 
 public class WifiMgr {
+
+    //过滤免密码连接的WiFi
+    public static final String NO_PASSWORD = "[ESS]";
+    public static final String NO_PASSWORD_WPS = "[WPS][ESS]";
 
     private Context mContext;
     private WifiManager mWifiManager;
@@ -66,6 +71,23 @@ public class WifiMgr {
         WifiConfiguration tempConfig = isExists(SSID);
         if (tempConfig != null) {
             mWifiManager.removeNetwork(tempConfig.networkId);
+        }
+    }
+
+    /**
+     * function:清除当前连接的WiFi网络
+     */
+    public void clearWifiConfig() {
+        //  \” --表示双引号，\--起到转义字符的作用
+        String SSID = mWifiManager.getConnectionInfo().getSSID().replace("\"", "");
+        List<WifiConfiguration> wifiConfigurations = mWifiManager.getConfiguredNetworks();
+        if (wifiConfigurations != null && wifiConfigurations.size() > 0) {
+            for (WifiConfiguration wifiConfiguration : wifiConfigurations) {
+                if (wifiConfiguration.SSID.replace("\"", "").contains(SSID)) {
+                    mWifiManager.removeNetwork(wifiConfiguration.networkId);
+                    mWifiManager.saveConfiguration();//保存设置
+                }
+            }
         }
     }
 
@@ -266,5 +288,24 @@ public class WifiMgr {
     private boolean isAdHoc(final ScanResult scanResult) {
         return scanResult.capabilities.contains("IBSS");
     }
+
+
+    /**
+     * function:获取连接WiFi后该热点的IP地址
+     *
+     * @return
+     */
+    public String getIpAddressFromHotspot() {
+        DhcpInfo dhcpInfo = mWifiManager.getDhcpInfo();
+        if (dhcpInfo != null) {
+            int address = dhcpInfo.gateway;
+            return ((address & 0xFF)
+                    + "." + ((address >> 8) & 0xFF)
+                    + "." + ((address >> 16) & 0xFF)
+                    + "." + ((address >> 24) & 0xFF));
+        }
+        return null;
+    }
+
 
 }
