@@ -1,21 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="项目开发者：梁竞"
+        android:textStyle="bold"
+        android:paddingLeft="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="37dp"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="专业班级：信息安全2班"
+        android:textStyle="bold"
+        android:paddingLeft="20dp"
+        android:layout_below="@+id/textView1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="学号：3116005183"
+        android:textStyle="bold"
+        android:paddingLeft="20dp"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
     <Button
         android:layout_width="wrap_content"
-        android:text="发送文件"
+        android:layout_height="wrap_content"
         android:onClick="sendFiles"
-        android:layout_height="wrap_content"/>
+        android:text="发送文件"
+        android:id="@+id/button2"
+        android:layout_below="@+id/textView3"
+        android:layout_alignLeft="@+id/button"
+        android:layout_alignStart="@+id/button"
+        android:layout_marginTop="136dp"/>
 
     <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
-        android:text="接收文件"
+        android:layout_height="wrap_content"
         android:onClick="receiveFiles"
-        android:layout_height="wrap_content"/>
+        android:text="接收文件"
+        android:layout_below="@+id/button2"
+        android:layout_centerHorizontal="true"/>
 
-</LinearLayout>
+</RelativeLayout>
